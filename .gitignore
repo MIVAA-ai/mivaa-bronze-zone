@@ -1,0 +1,16 @@
+uploads/*
+!uploads/
+!uploads/.gitkeep
+
+# Ignore all files in the folder
+output/*
+!output/
+!output/.gitkeep
+
+# Exclude database
+my_database.db
+my_database.db.wal
+
+
+.idea
+__pycache__/
