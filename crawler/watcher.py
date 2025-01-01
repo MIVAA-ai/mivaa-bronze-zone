@@ -22,7 +22,7 @@ def poll_folder(callback=None):
             # Get all .csv files in the folder
             current_files = {
                 f for f in directory_to_watch.iterdir()
-                if f.is_file() and f.suffix == ".csv" and os.path.getmtime(f) > script_start_time
+                if f.is_file() and f.suffix == ".csv"
             }
 
             # Detect new files

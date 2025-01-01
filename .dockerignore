@@ -1,0 +1,15 @@
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore local environment and logs
+.env
+*.log
+
+# Ignore Docker Compose
+docker-compose.yml
+
+# Ignore output files and uploads
+output/
+uploads/
