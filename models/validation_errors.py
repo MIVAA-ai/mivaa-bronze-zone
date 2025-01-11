@@ -1,56 +1,59 @@
-from utils.db_util import con
-import pandas as pd
+from config.logger_config import configure_logger
+from utils.db_util import get_session, text
+from sqlalchemy import func
 from datetime import datetime
+from utils.generate_sqlalchemy_model import generate_model_for_table
 
+# Configure logger
+logger = configure_logger("validation_errors.log")
+
+# Generate the SQLAlchemy model class dynamically for the 'validation_errors' table
+try:
+    ValidationErrorsModel = generate_model_for_table('validation_errors')
+    logger.info(f"Generated model class for table: {ValidationErrorsModel.__tablename__}")
+except Exception as e:
+    logger.error(f"Error generating model class for table 'validation_errors': {e}")
+    ValidationErrorsModel = None  # Ensure ValidationErrorsModel is defined as None if generation fails
 
 def log_errors_to_db(errors: list, file_id: int):
     """
-    Log validation errors to the database.
+    Log validation errors to the database dynamically using the ValidationErrorsModel.
+
+    :param errors: List of dictionaries containing validation error details.
+    :param file_id: ID of the file associated with the errors.
     """
-    # Ensure the table exists
-    con.execute("""
-        CREATE TABLE IF NOT EXISTS validation_errors (
-            error_id INTEGER PRIMARY KEY,
-            file_id INTEGER,
-            row_index INTEGER,
-            field_name TEXT,
-            error_type TEXT,
-            error_message TEXT,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        )
-    """)
-
-    # Convert errors to a DataFrame
-    error_df = pd.DataFrame(errors)
-
-    # Handle empty DataFrame case
-    if error_df.empty:
-        print("No errors to log.")
+    if ValidationErrorsModel is None:
+        logger.error("ValidationErrorsModel is not defined. Cannot log errors.")
         return
 
-    # Add required fields
-    max_id = con.execute("SELECT MAX(error_id) FROM validation_errors").fetchone()[0] or 0
-    error_df["error_id"] = range(max_id + 1, max_id + 1 + len(error_df))
-    error_df["file_id"] = file_id
-    error_df["created_at"] = datetime.now()
+    with get_session() as session:
+        # Handle empty errors list
+        if not errors:
+            logger.info("No errors to log.")
+            return
 
-    # Ensure the column order matches the table schema
-    column_order = [
-        "error_id", "file_id", "row_index", "field_name", "error_type", "error_message",
-        "error_message", "created_at"
-    ]
-    error_df = error_df[column_order]
+        logger.info("Logging errors to the database...")
 
-    # Insert into the database
-    con.register("error_temp", error_df)
-    print('******')
-    pd.set_option('display.max_columns', None)
-    print(error_df)
-    con.execute("""
-        INSERT INTO validation_errors 
-        SELECT error_id, file_id, row_index, field_name, error_type, error_message, created_at 
-        FROM error_temp
-    """)
-    con.unregister("error_temp")
+        # Fetch the maximum existing error_id and calculate new IDs
+        max_id = session.query(func.max(ValidationErrorsModel.error_id)).scalar() or 0
+        new_error_id_start = max_id + 1
 
-    print("Errors logged successfully.")
+        # Add required fields to each error
+        for idx, error in enumerate(errors):
+            error["error_id"] = new_error_id_start + idx
+            error["file_id"] = file_id
+            error["created_at"] = datetime.now()
+
+        print('*****************************')
+        print(errors)
+        # Create instances of the ValidationErrorsModel
+        error_records = [ValidationErrorsModel(**error) for error in errors]
+
+        try:
+            # Add the records to the session and commit
+            session.bulk_save_objects(error_records)
+            session.commit()
+            logger.info(f"{len(errors)} validation errors logged successfully.")
+        except Exception as e:
+            logger.error(f"Error logging validation errors: {e}")
+            session.rollback()

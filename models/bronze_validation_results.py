@@ -1,53 +1,57 @@
-from utils.db_util import con
-import pandas as pd
+import logging
+
+from config.logger_config import configure_logger
+from utils.db_util import get_session
 from datetime import datetime
+import pandas as pd
+from utils.generate_sqlalchemy_model import generate_model_for_table
+
+# Configure logging
+logger = configure_logger("field_bronze_table.log")
+
+# Generate the SQLAlchemy model class dynamically for the 'field_bronze_table' table
+try:
+    FieldBronzeTableModel = generate_model_for_table('field_bronze_table')
+    logger.info(f"Generated model class for table: {FieldBronzeTableModel.__tablename__}")
+except Exception as e:
+    logger.error(f"Error generating model class for table 'field_bronze_table': {e}")
+    FieldBronzeTableModel = None  # Ensure FieldBronzeTableModel is defined as None if generation fails
 
 def log_field_bronze_table(df: pd.DataFrame, file_id: int, error_index_set):
-    # Ensure the table exists
-    con.execute("""
-        CREATE TABLE IF NOT EXISTS field_bronze_table (
-            id INTEGER PRIMARY KEY,  -- Unique ID for each record
-            row_index INTEGER NOT NULL,
-            file_id INTEGER NOT NULL,              -- ID of the file being validated
-            validation_status TEXT NOT NULL,       -- Status of validation (e.g., Passed, Failed)
-            FieldName TEXT,                        -- Name of the field being validated
-            FieldType TEXT,                        -- Type of the field (e.g., string, integer)
-            DiscoveryDate TIMESTAMP,               -- Discovery date of the field
-            X REAL,                                -- X-coordinate for spatial data
-            Y REAL,                                -- Y-coordinate for spatial data
-            CRS TEXT,                              -- Coordinate Reference System
-            Source TEXT,                           -- Source of the data
-            ParentFieldName TEXT,                  -- Parent field name, if applicable
-            validation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of validation
-        );
-    """)
-
     """
-    Log validation status for each row in the database.
+    Logs validation status for each row in the database into the 'field_bronze_table'.
+
+    Parameters:
+    - df (pd.DataFrame): DataFrame containing the data to log.
+    - file_id (int): ID of the file being processed.
+    - error_index_set (set): Set of indices that failed validation.
     """
-    # Add file_id and validation status
-    max_id = con.execute("SELECT MAX(id) FROM field_bronze_table").fetchone()[0] or 0
-    df["id"] = range(max_id + 1, max_id + 1 + len(df))
-    df["row_index"] = df.index
-    df["file_id"] = file_id
-    # Assign "Passed" or "Failed" based on whether the index is in the error set
-    df["validation_status"] = ["Failed" if idx in error_index_set else "Passed" for idx in df.index]
-    df["validation_timestamp"] = datetime.now()
+    if FieldBronzeTableModel is None:
+        logger.error("FieldBronzeTableModel is not defined. Cannot log data.")
+        return
 
-    # Ensure the column order matches the table schema
-    column_order = [
-        "id", "row_index", "file_id", "validation_status", "FieldName", "FieldType", "DiscoveryDate",
-        "X", "Y", "CRS", "Source", "ParentFieldName", "validation_timestamp"
-    ]
-    df = df[column_order]
+    with get_session() as session:
+        try:
+            # Determine the starting ID for the new rows
+            max_id = session.query(FieldBronzeTableModel.id).order_by(FieldBronzeTableModel.id.desc()).first()
+            max_id = max_id[0] if max_id else 0
 
-    # Insert validation results
-    con.register("validation_temp", df)
-    print(con.execute("""SELECT * FROM validation_temp""").fetchone())
-    con.execute("""
-        INSERT INTO field_bronze_table SELECT * FROM validation_temp
-    """)
-    con.unregister("validation_temp")
+            # Add required columns to the DataFrame
+            df["id"] = range(max_id + 1, max_id + 1 + len(df))
+            df["row_index"] = df.index
+            df["file_id"] = file_id
+            df["validation_status"] = [
+                "Failed" if idx in error_index_set else "Passed" for idx in df.index
+            ]
+            df["validation_timestamp"] = datetime.now()
 
-    print("Validation results logged successfully.")
+            # Convert the DataFrame to a list of dictionaries
+            data_to_insert = df.to_dict(orient="records")
 
+            # Use bulk_insert_mappings for efficient insertion
+            session.bulk_insert_mappings(FieldBronzeTableModel, data_to_insert)
+            session.commit()
+            logger.info("Validation results logged successfully.")
+        except Exception as e:
+            logger.error(f"Error logging validation results: {e}")
+            session.rollback()

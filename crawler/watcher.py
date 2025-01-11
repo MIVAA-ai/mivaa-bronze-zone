@@ -72,29 +72,29 @@ def poll_folder(callback=None):
     script_start_time = time.time()  # Record the script's start time
 
     while True:
-        try:
-            # Get all .csv files in the folder
-            current_files = {
-                f for f in directory_to_watch.iterdir()
-                if f.is_file() and f.suffix == ".csv"
-            }
+        # try:
+        # Get all .csv files in the folder
+        current_files = {
+            f for f in directory_to_watch.iterdir()
+            if f.is_file() and f.suffix == ".csv"
+        }
 
-            # Detect new files
-            new_files = current_files - seen_files
-            for file in new_files:
-                print(f"New file detected: {file}")
+        # Detect new files
+        new_files = current_files - seen_files
+        for file in new_files:
+            print(f"New file detected: {file}")
 
-                # Wait for the file to stabilize
-                if _wait_for_file_complete(file):
-                    if callback:
-                        callback(file)
-                else:
-                    print(f"File not ready: {file}")
-            # Update seen files
-            seen_files.update(new_files)
+            # Wait for the file to stabilize
+            if _wait_for_file_complete(file):
+                if callback:
+                    callback(file)
+            else:
+                print(f"File not ready: {file}")
+        # Update seen files
+        seen_files.update(new_files)
 
-        except Exception as e:
-            print(f"Error during polling: {e}")
+        # except Exception as e:
+        #     print(f"Error during polling: {e}")
 
         time.sleep(5)  # Poll every 5 seconds
 def start_polling_thread(callback=None):

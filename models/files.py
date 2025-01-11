@@ -1,74 +1,115 @@
-import duckdb
-from utils.db_util import con
 import os
+import logging
+
+from config.logger_config import configure_logger
 from utils.checksum_util import calculate_checksum
-# Create the table with an auto-incrementing id (if it doesn't exist)
-create_table_query = """
-CREATE TABLE IF NOT EXISTS files (
-    id INTEGER PRIMARY KEY,  -- Automatically NOT NULL for PRIMARY KEY
-    filename TEXT NOT NULL,  -- Ensure filename cannot be NULL
-    filepath TEXT NOT NULL,  -- Ensure filepath cannot be NULL
-    datatype TEXT NOT NULL,  -- Ensure datatype cannot be NULL
-    checksum TEXT NOT NULL,  -- Ensure checksum cannot be NULL
-    remarks TEXT,            -- Remarks can be NULL
-    status TEXT              -- Status can be NULL
-);
-"""
-"""
-    Status
-    1: picked
-    2: Processing
-    3: processed 
-    4: Error
+from utils.generate_sqlalchemy_model import generate_model_for_table
 
-"""
+# Configure logger
+logger = configure_logger("files_operations.log")
 
-con.execute(create_table_query)
-print("Table 'files' created successfully.")
+# Generate the SQLAlchemy model class dynamically for the 'files' table
+try:
+    FileModelClass = generate_model_for_table('files')
+    logger.info(f"Generated model class for table: {FileModelClass.__tablename__}")
+except Exception as e:
+    logger.error(f"Error generating model class for table 'files': {e}")
+    FileModelClass = None  # Ensure FileModelClass is defined as None if generation fails
 
+def insert_data(session, filepath, datatype, remarks):
+    """
+    Inserts a new record into the `files` table using the FileModelClass.
+    """
+    if FileModelClass is None:
+        logger.error("FileModelClass is not defined. Cannot insert data.")
+        return None
 
-# Function to insert data into the table
-def insert_data(con, filepath, datatype, remarks):
-    # Extract filename from filepath
+    logger.info("Insert data called")
+
+    # Extract filename from the provided file path
     filename = os.path.basename(filepath)
-    # Generate checksum using the imported function
+
+    # Calculate checksum for the file
     checksum = calculate_checksum(filepath)
 
+    # Fetch the last ID and increment it
     try:
-        last_id = con.execute("SELECT MAX(id) FROM files").fetchone()[0] or 0
-    except duckdb.CatalogException:
-        last_id = 0  # Table is empty
+        last_id = session.query(FileModelClass).order_by(FileModelClass.id.desc()).first()
+        new_id = (last_id.id + 1) if last_id else 1
+    except Exception as e:
+        logger.error(f"Error fetching last ID: {e}")
+        new_id = 1
 
-    # Insert data
-    insert_query = """
-    INSERT INTO files (id, filename, filepath, datatype, checksum, remarks, status)
-    VALUES (?, ?, ?, ?, ?, ?, ?);
+    # Create a new instance of the model
+    new_file = FileModelClass(
+        id=new_id,
+        filename=filename,
+        filepath=filepath,
+        datatype=datatype,
+        checksum=checksum,
+        remarks=remarks,
+        status=1  # Default status
+    )
+
+    try:
+        # Add and commit the new record
+        session.add(new_file)
+        session.commit()
+        logger.info(f"Inserted: {filename} with checksum {checksum}")
+        return new_file.id
+    except Exception as e:
+        logger.error(f"Error inserting data into the `files` table: {e}")
+        session.rollback()
+        return None
+
+def fetch_files_to_process(session):
     """
-    new_id = last_id + 1  # Increment ID manually
-    con.execute(insert_query, [new_id, filename, filepath, datatype, checksum, remarks, '1'])
-    print(f"Inserted: {filename} with checksum {checksum}")
-    return new_id
+    Fetches files with status 1 or 2 from the `files` table for processing.
+    """
+    if FileModelClass is None:
+        logger.error("FileModelClass is not defined. Cannot fetch files.")
+        return None
 
+    try:
+        files_to_process = (
+            session.query(FileModelClass)
+            .filter(FileModelClass.status.in_([1, 2]))
+            .order_by(FileModelClass.status.asc())
+            .first()
+        )
+        return files_to_process
+    except Exception as e:
+        logger.error(f"Error fetching files from table: {e}")
+        return None
 
-def fetch_files_to_process(con):
-    return con.execute("SELECT * FROM files where status = '1'").fetchone()
+def update_file_status(session, status, id, remarks=None):
+    """
+    Updates the status of a file in the `files` table using the FileModelClass.
 
+    :param session: SQLAlchemy session
+    :param status: New status to set
+    :param id: ID of the file to update
+    :param remarks: Optional remarks to add
+    """
+    if FileModelClass is None:
+        logger.error("FileModelClass is not defined. Cannot update file status.")
+        return
 
-def update_file_status(status, id, remarks=None):
-    if remarks is not None:
-        sql_query = f"""
-            UPDATE files
-            SET status = ?, remarks = ?
-            WHERE id = ?"""
-        con.execute(sql_query, (status, remarks, id))
-    else:
-        sql_query = f"""
-            UPDATE files
-            SET status = ?
-            WHERE id = ?"""
-        con.execute(sql_query, (status, id))
+    try:
+        # Query the file record by ID
+        file_record = session.query(FileModelClass).filter_by(id=id).first()
+        if not file_record:
+            logger.warning(f"No file found with ID {id}")
+            return
 
+        # Update fields
+        file_record.status = status
+        if remarks is not None:
+            file_record.remarks = remarks
 
-
-
-
+        # Commit the changes
+        session.commit()
+        logger.info(f"Updated file with ID {id} to status {status}")
+    except Exception as e:
+        logger.error(f"Error updating file status: {e}")
+        session.rollback()

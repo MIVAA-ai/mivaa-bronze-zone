@@ -1,0 +1,39 @@
+[
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS sql_script_store (zone TEXT CHECK(zone IN ('COMMON', 'BRONZE', 'SILVER', 'GOLD')) NOT NULL, query TEXT NOT NULL, query_type TEXT CHECK(query_type IN ('SELECT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'OTHER')) NOT NULL, table_name TEXT NOT NULL, data_columns TEXT, -- New column to store the list of columns PRIMARY KEY (table_name, query_type));",
+        "query_type": "CREATE",
+        "table_name": "sql_script_store"
+    },
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS files (id INTEGER PRIMARY KEY, filename TEXT NOT NULL, filepath TEXT NOT NULL, datatype TEXT NOT NULL, checksum TEXT NOT NULL, remarks TEXT, status TEXT)",
+        "query_type": "CREATE",
+        "table_name": "files"
+    },
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS error_messages (error_code SERIAL PRIMARY KEY, error_message TEXT NOT NULL, error_severity TEXT CHECK(error_severity IN ('WARNING', 'ERROR')) NOT NULL)",
+        "query_type": "CREATE",
+        "table_name": "error_messages"
+    },
+    {
+        "zone": "COMMON",
+        "query": "INSERT INTO error_messages (error_code, error_message, error_severity) VALUES ('future_discovery_date', 'DiscoveryDate is in the future', 'WARNING'),('Inconsistent_field_data', 'Inconsistent FieldType or DiscoveryDate', 'ERROR'),('polygon_incomplete', 'Incomplete Polygon Data', 'ERROR'),('polygon_not_closed', 'Polygon not closed', 'ERROR'), ('not_nullable', 'Field name cannot be null or empty', 'ERROR');",
+        "query_type": "INSERT",
+        "table_name": "error_messages"
+    },
+    {
+        "zone": "COMMON",
+        "query": "CREATE TABLE IF NOT EXISTS validation_errors (error_id INTEGER PRIMARY KEY, file_id INTEGER, row_index INTEGER, field_name TEXT, error_type TEXT, error_code TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+        "query_type": "CREATE",
+        "table_name": "validation_errors"
+    },
+    {
+        "zone": "BRONZE",
+        "query": "CREATE TABLE IF NOT EXISTS field_bronze_table (id INTEGER PRIMARY KEY, row_index INTEGER NOT NULL, file_id INTEGER NOT NULL, validation_status TEXT NOT NULL, FieldName TEXT NOT NULL, FieldType TEXT, DiscoveryDate TIMESTAMP, X REAL, Y REAL, CRS TEXT, Source TEXT, ParentFieldName TEXT, validation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+        "query_type": "CREATE",
+        "data_columns": "FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName",
+        "table_name": "field_bronze_table"
+    }
+]
