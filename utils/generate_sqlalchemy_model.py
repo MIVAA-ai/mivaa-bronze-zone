@@ -108,7 +108,6 @@ def generate_model_class(sql):
                 nullable=column["nullable"],
                 primary_key=column["primary_key"]
             )
-        print(class_attributes)
         # Dynamically create a new SQLAlchemy model class
         model_class = type(table_name.capitalize(), (Base,), class_attributes)
         logger.info(f"Model class generated for table '{table_name}'")
@@ -126,9 +125,21 @@ def generate_model_for_table(table_name):
     :return: The generated SQLAlchemy model class.
     """
     try:
+        # Check if the table already exists in Base.metadata
+        if table_name in Base.metadata.tables:
+            logger.info(f"Table '{table_name}' is already defined in metadata. Reusing existing table.")
+            existing_table = Base.metadata.tables[table_name]
+            class_attributes = {"__tablename__": table_name, "__table__": existing_table}
+            model_class = type(table_name.capitalize(), (Base,), class_attributes)
+            return model_class
+
+        # Fetch the CREATE TABLE schema from the database
         create_table_sql = get_create_schema_from_db(table_name)
         logger.info(f"Retrieved schema for table '{table_name}': {create_table_sql}")
+
+        # Generate the model class using the schema
         return generate_model_class(create_table_sql)
     except Exception as e:
         logger.error(f"Error generating model for table '{table_name}': {e}")
         raise
+

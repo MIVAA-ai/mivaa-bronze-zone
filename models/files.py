@@ -8,13 +8,15 @@ from utils.generate_sqlalchemy_model import generate_model_for_table
 # Configure logger
 logger = configure_logger("files_operations.log")
 
+FileModelClass = None
 # Generate the SQLAlchemy model class dynamically for the 'files' table
 try:
-    FileModelClass = generate_model_for_table('files')
-    logger.info(f"Generated model class for table: {FileModelClass.__tablename__}")
+    if FileModelClass is None:
+        FileModelClass = generate_model_for_table('files')
+        logger.info(f"Generated model class for table: {FileModelClass.__tablename__}")
 except Exception as e:
     logger.error(f"Error generating model class for table 'files': {e}")
-    FileModelClass = None  # Ensure FileModelClass is defined as None if generation fails
+    # Ensure FileModelClass is defined as None if generation fails
 
 def insert_data(session, filepath, datatype, remarks):
     """

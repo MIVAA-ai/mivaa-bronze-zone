@@ -9,13 +9,15 @@ from utils.generate_sqlalchemy_model import generate_model_for_table
 # Configure logging
 logger = configure_logger("field_bronze_table.log")
 
+FieldBronzeTableModel = None
 # Generate the SQLAlchemy model class dynamically for the 'field_bronze_table' table
 try:
-    FieldBronzeTableModel = generate_model_for_table('field_bronze_table')
-    logger.info(f"Generated model class for table: {FieldBronzeTableModel.__tablename__}")
+    if FieldBronzeTableModel is None:
+        FieldBronzeTableModel = generate_model_for_table('field_bronze_table')
+        logger.info(f"Generated model class for table: {FieldBronzeTableModel.__tablename__}")
 except Exception as e:
     logger.error(f"Error generating model class for table 'field_bronze_table': {e}")
-    FieldBronzeTableModel = None  # Ensure FieldBronzeTableModel is defined as None if generation fails
+    # Ensure FieldBronzeTableModel is defined as None if generation fails
 
 def log_field_bronze_table(df: pd.DataFrame, file_id: int, error_index_set):
     """

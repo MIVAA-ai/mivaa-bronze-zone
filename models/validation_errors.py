@@ -7,13 +7,15 @@ from utils.generate_sqlalchemy_model import generate_model_for_table
 # Configure logger
 logger = configure_logger("validation_errors.log")
 
+ValidationErrorsModel = None
 # Generate the SQLAlchemy model class dynamically for the 'validation_errors' table
 try:
-    ValidationErrorsModel = generate_model_for_table('validation_errors')
-    logger.info(f"Generated model class for table: {ValidationErrorsModel.__tablename__}")
+    if ValidationErrorsModel is None:
+        ValidationErrorsModel = generate_model_for_table('validation_errors')
+        logger.info(f"Generated model class for table: {ValidationErrorsModel.__tablename__}")
 except Exception as e:
     logger.error(f"Error generating model class for table 'validation_errors': {e}")
-    ValidationErrorsModel = None  # Ensure ValidationErrorsModel is defined as None if generation fails
+    # Ensure ValidationErrorsModel is defined as None if generation fails
 
 def log_errors_to_db(errors: list, file_id: int):
     """
@@ -44,8 +46,6 @@ def log_errors_to_db(errors: list, file_id: int):
             error["file_id"] = file_id
             error["created_at"] = datetime.now()
 
-        print('*****************************')
-        print(errors)
         # Create instances of the ValidationErrorsModel
         error_records = [ValidationErrorsModel(**error) for error in errors]
 

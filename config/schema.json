@@ -1,7 +1,7 @@
 [
     {
         "zone": "COMMON",
-        "query": "CREATE TABLE IF NOT EXISTS sql_script_store (zone TEXT CHECK(zone IN ('COMMON', 'BRONZE', 'SILVER', 'GOLD')) NOT NULL, query TEXT NOT NULL, query_type TEXT CHECK(query_type IN ('SELECT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'OTHER')) NOT NULL, table_name TEXT NOT NULL, data_columns TEXT, -- New column to store the list of columns PRIMARY KEY (table_name, query_type));",
+        "query": "CREATE TABLE IF NOT EXISTS sql_script_store (zone TEXT CHECK(zone IN ('COMMON', 'BRONZE', 'SILVER', 'GOLD')) NOT NULL, query TEXT NOT NULL, query_type TEXT CHECK(query_type IN ('SELECT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'INSERT', 'OTHER')) NOT NULL, table_name TEXT NOT NULL, data_columns TEXT, PRIMARY KEY (table_name, query_type));",
         "query_type": "CREATE",
         "table_name": "sql_script_store"
     },
@@ -13,7 +13,7 @@
     },
     {
         "zone": "COMMON",
-        "query": "CREATE TABLE IF NOT EXISTS error_messages (error_code SERIAL PRIMARY KEY, error_message TEXT NOT NULL, error_severity TEXT CHECK(error_severity IN ('WARNING', 'ERROR')) NOT NULL)",
+        "query": "CREATE TABLE IF NOT EXISTS error_messages (error_code TEXT PRIMARY KEY,error_message TEXT NOT NULL,error_severity TEXT CHECK(error_severity IN ('WARNING', 'ERROR')) NOT NULL);",
         "query_type": "CREATE",
         "table_name": "error_messages"
     },

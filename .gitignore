@@ -14,4 +14,3 @@ my_database.db.wal
 
 .idea
 __pycache__/
-utils/db_client.py

@@ -35,7 +35,7 @@ def configure_logger(log_file_name: str):
             file_handler.setFormatter(file_formatter)
             logger.addHandler(file_handler)
 
-        # Stream handler with color-coded log levels
+        # Stream handler with color-coded log levels and messages
         class ColoredFormatter(logging.Formatter):
             LEVEL_COLORS = {
                 "DEBUG": Fore.BLUE,
@@ -48,6 +48,7 @@ def configure_logger(log_file_name: str):
             def format(self, record):
                 level_color = self.LEVEL_COLORS.get(record.levelname, "")
                 record.levelname = f"{level_color}{record.levelname}{Style.RESET_ALL}"
+                record.msg = f"{level_color}{record.msg}{Style.RESET_ALL}"
                 return super().format(record)
 
         stream_handler = logging.StreamHandler()

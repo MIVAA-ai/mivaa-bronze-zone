@@ -1,7 +1,7 @@
 from config.logger_config import configure_logger
 from crawler import start_polling_thread, poll_table
 from validator.field_validator import validate_field
-from utils.db_util import get_session, initialize_database_from_json, get_columns_from_store
+from utils.db_util import get_session, get_columns_from_store
 from models.files import insert_data, fetch_files_to_process, update_file_status
 import pandas as pd
 
@@ -26,14 +26,14 @@ def insert_fields_data_in_db(filepath):
         except Exception as e:
             logger.error(f"Error inserting data from file {filepath}: {e}")
 
-def validate_columns(df):
+def validate_columns(df, column_list):
     """
     Validate that the required columns exist in the DataFrame.
 
     :param df: DataFrame to validate.
     :return: Count of missing columns.
     """
-    missing_columns = [col for col in field_column_list if col not in df.columns]
+    missing_columns = [col for col in column_list if col not in df.columns]
     if missing_columns:
         logger.warning(f"Missing columns: {missing_columns}")
     return len(missing_columns)
@@ -54,7 +54,7 @@ def read_fields_data_in_db():
             df = pd.read_csv(results.filepath)
 
             # Validate columns
-            if validate_columns(df):
+            if validate_columns(df, field_column_list):
                 logger.error("Column validation failed. Updating file status to error.")
                 update_file_status(session, '4', results.id, "Error: Columns do not match")
             else:
@@ -72,13 +72,6 @@ if __name__ == "__main__":
     """
     Main entry point for executing the database initialization script.
     """
-    try:
-        logger.info("Initializing database from JSON Schema file.")
-        initialize_database_from_json()
-        logger.info("Database initialization completed successfully.")
-    except Exception as e:
-        logger.error(f"An error occurred during database initialization: {e}")
-
     # Start the polling thread and begin processing
     try:
         logger.info("Starting polling thread for data insertion.")

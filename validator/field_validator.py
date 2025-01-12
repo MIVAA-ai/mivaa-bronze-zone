@@ -9,9 +9,10 @@ from config.logger_config import configure_logger
 from models.bronze_validation_results import log_field_bronze_table, FieldBronzeTableModel
 from models.error_messages import ErrorMessagesModel
 from models.validation_errors import log_errors_to_db, ValidationErrorsModel
-from utils.db_util import get_session, text
+from utils.db_util import get_session
 from utils.generate_pandera_schema import generate_pandera_class_from_table_info
 import traceback
+from sqlalchemy.sql import case
 
 # Configure logger
 logger = configure_logger("validation.log")
@@ -139,13 +140,11 @@ def log_and_save_results(df, file_id, file_name, validation_errors):
                     FieldBronzeTableModel.validation_timestamp,
                     func.group_concat(ErrorMessagesAlias.error_message, ', ').label("error_message"),
                     # Determine error_severity: show "ERROR" if any error exists, otherwise "WARNING"
-                    func.case(
-                        [
-                            (func.sum(func.case([(ErrorMessagesAlias.error_severity == 'ERROR', 1)], else_=0)) > 0,
-                             'ERROR')
-                        ],
-                        else_='WARNING'
-                    ).label("error_severity"),
+                    case(
+                        (func.sum(case((ErrorMessagesAlias.error_severity == 'ERROR', 1), else_=0)) > 0, 'ERROR'),
+                        (func.sum(case((ErrorMessagesAlias.error_severity == 'WARNING', 1), else_=0)) > 0, 'WARNING'),
+                        else_=''  # Return empty string when there are no warnings or errors
+                    ).label("error_severity")
                 )
                 .outerjoin(
                     ValidationErrorsAlias,
@@ -187,7 +186,6 @@ def validate_field(df, file_id, file_name):
     """Main function to validate data."""
     try:
         DynamicFieldSchema = integrate_custom_checks("field_bronze_table")
-        schema_class = DynamicFieldSchema
         # Convert DiscoveryDate to datetime with dayfirst=True
         df['DiscoveryDate'] = pd.to_datetime(df['DiscoveryDate'], errors='coerce', dayfirst=True)
 
