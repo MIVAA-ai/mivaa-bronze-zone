@@ -58,7 +58,7 @@ setup.bat D:/MIVAA-ai/osdu-sync-field
 ### Initialize the Database
 
 ```bash
-python app.py
+python startup.py
 ```
 
 Logs will indicate the progress of database initialization and application startup:
