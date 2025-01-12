@@ -6,7 +6,7 @@ from pandera.typing import Series
 from sqlalchemy import func
 from sqlalchemy.orm import aliased
 from config.logger_config import configure_logger
-from models.bronze_validation_results import log_field_bronze_table, FieldBronzeTableModel
+from models.bronze_validation_results_field_data import log_field_bronze_table, FieldBronzeTableModel
 from models.error_messages import ErrorMessagesModel
 from models.validation_errors import log_errors_to_db, ValidationErrorsModel
 from utils.db_util import get_session

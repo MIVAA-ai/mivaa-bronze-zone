@@ -86,3 +86,9 @@ if __name__ == "__main__":
         logger.info("Database initialization completed successfully.")
     except Exception as e:
         logger.error(f"An error occurred during database initialization: {e}")
+
+    logger.info("Database initialized. Starting the application...")
+    # Import and start the application
+    from app import start_app
+
+    start_app()

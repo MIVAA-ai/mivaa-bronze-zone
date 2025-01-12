@@ -1,6 +1,6 @@
 from config.logger_config import configure_logger
 from crawler import start_polling_thread, poll_table
-from validator.field_validator import validate_field
+from validators.field_data_validator import validate_field
 from utils.db_util import get_session, get_columns_from_store
 from models.files import insert_data, fetch_files_to_process, update_file_status
 import pandas as pd
@@ -68,7 +68,7 @@ def read_fields_data_in_db():
         except Exception as e:
             logger.error(f"An error occurred while processing files: {e}")
 
-if __name__ == "__main__":
+def start_app():
     """
     Main entry point for executing the database initialization script.
     """

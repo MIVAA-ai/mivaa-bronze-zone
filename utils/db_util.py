@@ -1,3 +1,5 @@
+import os
+
 from sqlalchemy import create_engine, text, Column, String, Text, CheckConstraint, PrimaryKeyConstraint
 
 from sqlalchemy.orm import sessionmaker
@@ -8,8 +10,16 @@ from models.sql_script_store import SQLScriptStore
 # Configure logger
 logger = configure_logger("database_operations.log")
 
-# Database connection URL (DuckDB)
-DATABASE_URL = "duckdb:///my_database.db"
+# Define the folder for the database
+db_folder = "db_files"
+os.makedirs(db_folder, exist_ok=True)  # Create the folder if it doesn't exist
+
+# Define the path for the DuckDB database
+db_file_name = "my_database.db"
+db_path = os.path.join(db_folder, db_file_name)
+
+# Update the DATABASE_URL
+DATABASE_URL = f"duckdb:///{db_path}"
 
 # Create the engine
 engine = create_engine(DATABASE_URL)

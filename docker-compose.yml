@@ -9,6 +9,7 @@ services:
     volumes:
       - ${UPLOADS_DIR}:/uploads  # Map the uploads directory from host
       - ${OUTPUT_DIR}:/output   # Map the output directory from host
+      - ${DB_DIR}:/db_files  # Map the uploads directory from host
     ports:
       - "5000:5000"  # Expose the application port
     env_file:
