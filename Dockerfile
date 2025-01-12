@@ -23,4 +23,4 @@ EXPOSE 5000
 ENV PYTHONUNBUFFERED=1
 
 # Define the default command to run your application
-CMD ["python", "app.py"]
+CMD ["python", "startup.py"]
