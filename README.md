@@ -147,13 +147,15 @@ mivaa-fieldboundaries-bronze-zone/
 
 ---
 
-## License
+## Notes
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+--This application requires Docker Compose.
 
----
+--Ensure your CSV files are properly formatted for successful processing.
 
-## Contact
+--Avoid editing any files that are being actively processed, as it might cause conflicts or errors.
 
-For questions or support, please contact [support@mivaa-ai.com](mailto:support@mivaa-ai.com).
+--This application is tested in both Windows and Linux environments. In case of issues, feel free to reach out.
+
+Feel free to raise any issues or suggestions for improvement! Reach out at support@mivaa-ai.com for more help, comments, or feedback.
 
