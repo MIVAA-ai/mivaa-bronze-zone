@@ -1,15 +1,13 @@
 # MIVAA Bronze Zone Tool
 
-OSDU Sync is a robust data synchronization tool designed to streamline data management within the Open Subsurface Data Universe (OSDU) ecosystem. This tool ensures seamless integration and synchronization between local systems and OSDU-compliant environments, making subsurface and energy data management more efficient and reliable.
-
----
+This repository contains a robust software utility designed to validate and process field boundaries data in CSV format. Built with a focus on ensuring data quality, the utility plays a critical role in preparing high-quality data for ingestion into platforms like OSDU, adhering to the principles of the Medallion Architecture. Currently this utility has only bronze zone validations implemented.
 
 ## Features
 
 - **Data Synchronization**: Syncs files and metadata between local systems and OSDU.
 - **Validation Engine**: Custom validation checks ensure data integrity.
 - **Error Logging**: Detailed logging of warnings and errors.
-- **Configurable Folders**: Manage uploads, outputs, and database files dynamically.
+- **Configurable Folders**: Dynamically manage uploads, outputs, and database files.
 - **Docker Integration**: Easily deploy using Docker Compose.
 
 ---
@@ -25,8 +23,8 @@ OSDU Sync is a robust data synchronization tool designed to streamline data mana
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/MIVAA-ai/osdu-sync.git
-cd osdu-sync
+git clone https://github.com/MIVAA-ai/mivaa-bronze-zone.git
+cd mivaa-bronze-zone
 ```
 
 ### Install Dependencies
@@ -64,7 +62,7 @@ python startup.py
 Logs will indicate the progress of database initialization and application startup:
 
 ```plaintext
-INFO - Initializing database from JSON Schema file.
+INFO - Initialize the database from the JSON Schema file.
 INFO - Database initialization completed successfully.
 INFO - Starting application...
 ```
@@ -81,7 +79,7 @@ docker-compose --env-file .env up --build
 
 ## Validation Engine
 
-The validation engine performs checks on subsurface data, ensuring compliance with OSDU standards. Key features include:
+The validation engine checks subsurface data, ensuring compliance with OSDU standards. Key features include:
 
 - **Custom Checks**:
   - `validate_discovery_date`: Ensures discovery dates are not in the future.
