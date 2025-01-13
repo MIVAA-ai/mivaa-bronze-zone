@@ -1,121 +1,149 @@
 # MIVAA Bronze Zone Tool
 
-This repository contains a robust software utility designed to validate and process field boundaries data in CSV format. Built with a focus on ensuring data quality, the utility plays a critical role in preparing high-quality data for ingestion into platforms like OSDU, adhering to the principles of the Medallion Architecture. Currently this utility has only bronze zone validations implemented.
-
-## Features
-
-- **Data Synchronization**: Syncs files and metadata between local systems and OSDU.
-- **Validation Engine**: Custom validation checks ensure data integrity.
-- **Error Logging**: Detailed logging of warnings and errors.
-- **Configurable Folders**: Dynamically manage uploads, outputs, and database files.
-- **Docker Integration**: Easily deploy using Docker Compose.
+This repository contains a robust software utility designed to validate and process field boundaries data in CSV format. Built with a focus on ensuring data quality, the utility plays a critical role in preparing high-quality data for ingestion into platforms like OSDU, adhering to the principles of the Medallion Architecture. Currently, this utility implements only bronze zone validations.
 
 ---
 
-## Installation
+## Prerequisites
 
-### Prerequisites
+1. **Download the Repository**:
+   - [Clone](https://github.com/MIVAA-ai/mivaa-bronze-zone.git) or download the repository as a [ZIP](https://github.com/MIVAA-ai/mivaa-bronze-zone/archive/refs/heads/main.zip) file.
 
-- Python 3.9+
-- Docker & Docker Compose
-- Git
+2. **Unzip the Repository**:
+   - Extract the downloaded ZIP file to a folder on your system.
 
-### Clone the Repository
+3. **Install Python**:
+   - Ensure Python 3.9+ is installed on your machine. You can download Python [here](https://www.python.org/downloads/).
 
-```bash
-git clone https://github.com/MIVAA-ai/mivaa-bronze-zone.git
-cd mivaa-bronze-zone
-```
-
-### Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### Setup Environment Variables
-
-Create or update the `.env` file in the root directory:
-
-```
-UPLOADS_DIR=path/to/uploads
-OUTPUT_DIR=path/to/output
-DB_DIR=path/to/db_files
-```
-
-Use the provided batch script to initialize directories and update the `.env` file dynamically:
-
-```bash
-setup.bat D:/MIVAA-ai/osdu-sync-field
-```
+4. **Install Docker**:
+   - Ensure Docker and Docker Compose are installed and running on your machine. You can download Docker [here](https://www.docker.com/).
 
 ---
 
-## Usage
+## Steps to Run the Application Using the Startup Script
 
-### Initialize the Database
+### 1. Setup the Environment
 
+#### For Windows:
+1. Open Command Prompt.
+2. Navigate to the repository directory and run:
+   ```cmd
+   setup.bat D:/MIVAA-ai/mivaa-bronze-directory
+   ```
+   Replace `D:/MIVAA-ai/mivaa-bronze-directory` with your desired base directory.
+
+#### For Linux:
+1. Open a terminal.
+2. Navigate to the repository directory.
+3. Make the script executable (only needed the first time):
+   ```bash
+   chmod +x setup.sh
+   ```
+4. Run the command:
+   ```bash
+   ./setup.sh /path/to/mivaa-bronze-directory
+   ```
+   Replace `/path/to/mivaa-bronze-directory` with your desired base directory.
+
+### 2. Initialize the Database
+
+Run the following command in your terminal:
 ```bash
 python startup.py
 ```
-
-Logs will indicate the progress of database initialization and application startup:
-
+This will initialize the database and prepare the application for use. Example log output:
 ```plaintext
 INFO - Initialize the database from the JSON Schema file.
 INFO - Database initialization completed successfully.
 INFO - Starting application...
 ```
 
-### Run Docker Compose
+### 3. Start the Application Using Docker Compose
 
-To start the application using Docker Compose:
-
+Run the following command to start the application:
 ```bash
 docker-compose --env-file .env up --build
 ```
 
+### Error Logging
+Errors are logged in the database with severity levels (`WARNING`, `ERROR`). Detailed logs are generated to help users identify and resolve issues efficiently.
+
 ---
 
-## Validation Engine
+## Accessing Logs and Outputs
 
-The validation engine checks subsurface data, ensuring compliance with OSDU standards. Key features include:
-
-- **Custom Checks**:
-  - `validate_discovery_date`: Ensures discovery dates are not in the future.
-  - `validate_consistency`: Validates consistency of `FieldType` and `DiscoveryDate`.
-  - `validate_polygon_completeness`: Verifies polygons are properly defined.
-  - `validate_polygon_closure`: Ensures polygons are closed geometrically.
-
-- **Error Logging**: Errors are logged in the database with severity levels (`WARNING`, `ERROR`).
+- **Uploads Directory**:
+  Place your CSV files in the directory specified in the `UPLOADS_DIR` path in your `.env` file.
+- **Processed Directory**:
+  The validated and processed files will be saved in the directory specified in the `OUTPUT_DIR` path.
+- **Error Logs**:
+  Detailed error logs are saved in the database and corresponding output folders for review.
 
 ---
 
 ## Project Structure
 
 ```
-osdu-sync/
-├── app.py               # Main application entry point
-├── crawler/             # Contains polling and file watching utilities
-├── models/              # SQLAlchemy models for database tables
-├── utils/               # Utility scripts (DB, validation, logging)
-├── validator/           # Data validation logic
-├── docker-compose.yml   # Docker Compose configuration
-├── requirements.txt     # Python dependencies
-├── .env                 # Environment variables
+mivaa-fieldboundaries-bronze-zone/
+├── app.py                # Main application entry point
+├── config/               # Configuration files and utilities
+│   ├── settings.py       # Application-level settings and environment variables
+│   └── logger.py         # Logging configuration
+├── crawler/              # File synchronization and polling utilities
+│   ├── file_watcher.py   # Watches for changes in input directories
+│   └── sync_service.py   # Synchronizes files between local and remote locations
+├── models/               # Database models and schema
+│   ├── base_model.py     # Base model definition
+│   └── field_models.py   # Models specific to field boundaries
+├── utils/                # Helper functions and utilities
+│   ├── db_utils.py       # Database connection and query utilities
+│   ├── validation_utils.py # Validation logic for input data
+│   └── file_utils.py     # File handling and path management
+├── validator/            # Core data validation logic
+│   ├── validations.py    # Custom validation functions
+│   ├── polygon_checks.py # Polygon-specific validation logic
+│   └── date_checks.py    # Date-specific validation logic
+├── migrations/           # Database migrations and versioning
+│   ├── 0001_initial.py   # Initial database schema
+│   └── alembic.ini       # Alembic configuration for migrations
+├── tests/                # Unit and integration tests
+│   ├── test_validations.py # Tests for validation logic
+│   ├── test_crawler.py   # Tests for file synchronization
+│   └── test_endpoints.py # API or main app testing
+├── docker/               # Docker-related files
+│   ├── Dockerfile        # Docker image configuration
+│   └── docker-compose.yml # Docker Compose configuration
+├── .env                  # Environment variables
+├── requirements.txt      # Python dependencies
+├── setup.bat             # Windows setup script
+├── setup.sh              # Linux setup script
+└── README.md             # Project documentation
+
 ```
 
 ---
 
-## Contributing
+## Troubleshooting
 
-Contributions are welcome! Please follow these steps:
+- **Check Environment Variables**:
+  Ensure the directories specified in the `.env` file exist and are accessible.
+- **Inspect Docker Logs**:
+  Run the following command to view Docker logs:
+  ```bash
+  docker-compose logs
+  ```
+- **Rebuild Containers**:
+  If you encounter issues, rebuild the containers using:
+  ```bash
+  docker-compose --env-file .env up --build
+  ```
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m "Add feature"`).
-4. Push to the branch (`git push origin feature-name`).
-5. Open a pull request.
+---
+
+## Additional Resources
+- **Blog**: Read the detailed blog post about this application: 
+- **Medallion Architecture**: Learn more about the principles of Medallion Architecture [here](https://example.com).
+- **OSDU Standards**: Read about OSDU standards [here](https://osduforum.org/).
 
 ---
 
@@ -128,3 +156,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contact
 
 For questions or support, please contact [support@mivaa-ai.com](mailto:support@mivaa-ai.com).
+
