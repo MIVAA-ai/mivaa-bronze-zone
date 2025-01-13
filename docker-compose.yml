@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: osdu-sync-container
+    container_name: mivaa-fieldboundaries-bronze-zone-container
     volumes:
       - ${UPLOADS_DIR}:/uploads  # Map the uploads directory from host
       - ${OUTPUT_DIR}:/output   # Map the output directory from host
