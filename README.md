@@ -1,4 +1,4 @@
-# OSDU Sync
+# MIVAA Bronze Zone Tool
 
 OSDU Sync is a robust data synchronization tool designed to streamline data management within the Open Subsurface Data Universe (OSDU) ecosystem. This tool ensures seamless integration and synchronization between local systems and OSDU-compliant environments, making subsurface and energy data management more efficient and reliable.
 
