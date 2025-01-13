@@ -149,13 +149,13 @@ mivaa-fieldboundaries-bronze-zone/
 
 ## Notes
 
---This application requires Docker Compose.
+-This application requires Docker Compose.
 
---Ensure your CSV files are properly formatted for successful processing.
+-Ensure your CSV files are properly formatted for successful processing.
 
---Avoid editing any files that are being actively processed, as it might cause conflicts or errors.
+-Avoid editing any files that are being actively processed, as it might cause conflicts or errors.
 
---This application is tested in both Windows and Linux environments. In case of issues, feel free to reach out.
+-This application is tested in both Windows and Linux environments. In case of issues, feel free to reach out.
 
 Feel free to raise any issues or suggestions for improvement! Reach out at support@mivaa-ai.com for more help, comments, or feedback.
 
