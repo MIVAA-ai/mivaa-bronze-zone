@@ -1,0 +1,10 @@
+FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName
+Field_A,OilField,2023-09-15,45.12,67.89,EPSG:4326,,
+Field_A,OilField,2023-09-15,,67.45,EPSG:4326,,
+Field_A,OilField,2023-09-15,47.56,68.23,EPSG:4326,,
+Field_A,OilField,2023-09-15,45.12,67.89,EPSG:4326,,
+Field_B,GasField,2021-05-10,,,,,
+Field_C,OilField,2022-03-21,50.0,60.0,EPSG:3857,,
+Field_C,OilField,2022-03-21,51.0,61.0,EPSG:3857,,
+Field_C,OilField,2022-03-21,50.5,60.5,EPSG:3857,,
+Field_C,OilField,2022-03-21,50.0,60.0,EPSG:3857,,
