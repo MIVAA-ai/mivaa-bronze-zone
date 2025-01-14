@@ -143,7 +143,6 @@ mivaa-fieldboundaries-bronze-zone/
 ## Additional Resources
 - **Blog**: Read the detailed blog post about this application: 
 - **Medallion Architecture**: Learn more about the principles of Medallion Architecture [here](https://example.com).
-- **OSDU Standards**: Read about OSDU standards [here](https://osduforum.org/).
 
 ---
 
