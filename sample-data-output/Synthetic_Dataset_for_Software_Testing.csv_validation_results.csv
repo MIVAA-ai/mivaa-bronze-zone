@@ -1,0 +1,51 @@
+id,row_index,file_id,validation_status,FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName,validation_timestamp,error_message,error_severity
+64,0,3,Passed,Field_A,OilField,2024-02-27,45.5,54.459999084472656,EPSG:4326,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+65,1,3,Passed,Field_A,MixedField,2022-05-14,40.63999938964844,51.869998931884766,EPSG:4326,Generated,Field_A,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+66,2,3,Passed,Field_E,OilField,2024-01-06,53.0,60.900001525878906,EPSG:4326,Generated,Field_C,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+67,3,3,Passed,Field_A,OilField,2023-11-30,48.45000076293945,55.560001373291016,EPSG:4326,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+68,4,3,Passed,Field_C,OilField,2020-07-08,47.599998474121094,57.18000030517578,EPSG:3857,Generated,Field_A,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+69,5,3,Passed,Field_D,MixedField,2020-09-12,59.459999084472656,57.56999969482422,EPSG:3857,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+70,6,3,Passed,Field_E,GasField,2023-03-28,43.849998474121094,51.38999938964844,EPSG:4326,Generated,Field_A,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+71,7,3,Passed,Field_B,OilField,2022-02-17,,,nan,Generated,Field_C,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+72,8,3,Passed,Field_B,GasField,2021-12-28,,,nan,Generated,Field_C,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+73,9,3,Passed,Field_A,MixedField,2023-07-24,43.41999816894531,64.58000183105469,EPSG:4326,Generated,Field_C,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+74,10,3,Passed,Field_E,OilField,2023-11-03,46.4900016784668,65.37000274658203,EPSG:4326,Generated,Field_A,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+75,11,3,Passed,Field_C,GasField,2021-07-02,41.31999969482422,68.26000213623047,EPSG:3857,Generated,Field_D,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+76,12,3,Passed,Field_D,MixedField,2022-07-28,42.86000061035156,52.790000915527344,EPSG:3857,Generated,Field_D,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+77,13,3,Passed,Field_E,GasField,2022-01-11,44.38999938964844,69.94999694824219,EPSG:3857,Generated,Field_A,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+78,14,3,Passed,Field_A,OilField,2023-07-09,43.20000076293945,63.61000061035156,EPSG:4326,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+79,15,3,Passed,Field_D,MixedField,2021-05-29,59.41999816894531,67.22000122070312,EPSG:4326,Generated,Field_A,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+80,16,3,Passed,Field_E,GasField,2024-04-23,52.81999969482422,52.22999954223633,EPSG:3857,Generated,Field_A,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+81,17,3,Passed,Field_C,MixedField,2024-04-09,43.56999969482422,68.25,EPSG:3857,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+82,18,3,Passed,Field_E,MixedField,2021-02-11,43.060001373291016,65.25,EPSG:4326,Generated,Field_D,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+83,19,3,Passed,Field_A,OilField,2025-03-17,47.2599983215332,69.70999908447266,EPSG:3857,Generated,Field_B,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate, DiscoveryDate is in the future",ERROR
+84,20,3,Passed,Field_E,OilField,2020-06-24,54.63999938964844,66.31999969482422,EPSG:4326,Generated,Field_D,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+85,21,3,Passed,Field_E,OilField,2021-06-26,50.54999923706055,62.130001068115234,EPSG:4326,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+86,22,3,Passed,Field_B,MixedField,2021-09-30,,,nan,Generated,Field_C,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+87,23,3,Passed,Field_D,MixedField,2022-07-13,42.41999816894531,54.4900016784668,EPSG:3857,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+88,24,3,Passed,Field_B,MixedField,2021-03-27,,,nan,Generated,Field_A,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+89,25,3,Passed,Field_B,OilField,2025-01-28,,,nan,Generated,Field_C,2025-01-13 10:49:25.114700,"Inconsistent FieldType or DiscoveryDate, DiscoveryDate is in the future",ERROR
+90,26,3,Passed,Field_A,MixedField,2021-05-02,45.56999969482422,59.709999084472656,EPSG:4326,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+91,27,3,Passed,Field_E,GasField,2021-05-12,55.689998626708984,66.1500015258789,EPSG:4326,Generated,Field_D,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+92,28,3,Passed,Field_C,GasField,2022-04-21,49.34000015258789,64.58000183105469,EPSG:4326,Generated,Field_C,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+93,29,3,Passed,Field_A,OilField,2021-01-27,43.79999923706055,58.970001220703125,EPSG:3857,Generated,Field_D,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+94,30,3,Passed,Field_B,OilField,2022-06-26,,,nan,Generated,nan,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+95,31,3,Passed,Field_E,OilField,2020-04-13,53.040000915527344,60.810001373291016,EPSG:4326,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+96,32,3,Passed,Field_B,OilField,2022-04-12,,,nan,Generated,Field_B,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+97,33,3,Passed,Field_D,OilField,2020-12-03,47.58000183105469,69.70999908447266,EPSG:3857,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+98,34,3,Passed,Field_D,GasField,2022-05-16,53.93000030517578,64.61000061035156,EPSG:3857,Generated,Field_C,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+99,35,3,Passed,Field_B,OilField,2023-04-01,,,nan,Generated,Field_A,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+100,36,3,Passed,Field_C,OilField,2020-04-12,51.68000030517578,60.060001373291016,EPSG:4326,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+101,37,3,Passed,Field_A,OilField,2020-05-20,51.900001525878906,63.5,EPSG:4326,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+102,38,3,Passed,Field_B,MixedField,2023-05-02,,,nan,Generated,Field_A,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+103,39,3,Passed,Field_D,MixedField,2023-04-10,51.29999923706055,56.33000183105469,EPSG:3857,Generated,Field_C,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+104,40,3,Passed,Field_B,GasField,2022-03-21,,,nan,Generated,Field_C,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+105,41,3,Passed,Field_D,GasField,2025-03-17,55.040000915527344,51.45000076293945,EPSG:3857,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate, DiscoveryDate is in the future",ERROR
+106,42,3,Passed,Field_A,OilField,2023-01-06,44.2599983215332,55.29999923706055,EPSG:3857,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+107,43,3,Passed,Field_B,GasField,2021-08-06,,,nan,Generated,Field_E,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+108,44,3,Passed,Field_C,MixedField,2024-07-10,53.08000183105469,50.15999984741211,EPSG:3857,Generated,nan,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+109,45,3,Passed,Field_A,OilField,2021-06-25,42.310001373291016,52.13999938964844,EPSG:4326,Generated,Field_E,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+110,46,3,Passed,Field_B,MixedField,2021-12-03,,,nan,Generated,Field_C,2025-01-13 10:49:25.114700,Inconsistent FieldType or DiscoveryDate,ERROR
+111,47,3,Passed,Field_E,GasField,2021-05-29,58.11000061035156,66.91999816894531,EPSG:4326,Generated,Field_C,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+112,48,3,Passed,Field_A,OilField,2021-11-14,55.41999816894531,62.7400016784668,EPSG:3857,Generated,Field_D,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
+113,49,3,Passed,Field_E,MixedField,2022-05-25,51.220001220703125,52.2400016784668,EPSG:4326,Generated,Field_C,2025-01-13 10:49:25.114700,"Polygon not closed, Inconsistent FieldType or DiscoveryDate",ERROR
