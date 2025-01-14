@@ -28,7 +28,7 @@ This repository contains a robust software utility designed to validate and proc
 1. Open Command Prompt.
 2. Navigate to the repository directory and run:
    ```cmd
-   setup.bat D:/MIVAA-ai/mivaa-bronze-directory
+   startup-windows.bat D:/MIVAA-ai/mivaa-bronze-directory
    ```
    Replace `D:/MIVAA-ai/mivaa-bronze-directory` with your desired base directory.
 
@@ -37,11 +37,11 @@ This repository contains a robust software utility designed to validate and proc
 2. Navigate to the repository directory.
 3. Make the script executable (only needed the first time):
    ```bash
-   chmod +x setup.sh
+   chmod +x startup-linux.sh
    ```
 4. Run the command:
    ```bash
-   ./setup.sh /path/to/mivaa-bronze-directory
+   ./startup-linux.sh /path/to/mivaa-bronze-directory
    ```
    Replace `/path/to/mivaa-bronze-directory` with your desired base directory.
 
