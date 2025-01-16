@@ -149,8 +149,6 @@ mivaa-fieldboundaries-bronze-zone/
 ## Notes
 
 - This application requires Docker Compose.
-- Ensure your LAS files are properly formatted for successful processing.
-- Avoid opening the scanned_files.csv in the Excel application while the system updates the file. The application locks the file, which prevents the system from updating it with the latest information.
 - This application is currently tested in the windows environment, incase you face any issues running it in Linux, feel free to reach out.
 
 Feel free to raise any issues or suggestions for improvement! Reach out at [info@deepdatawithmivaa.com](mailto:info@deepdatawithmivaa.com) for more help, comments, or feedback.
