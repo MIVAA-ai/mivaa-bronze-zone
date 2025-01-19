@@ -1,6 +1,7 @@
 import logging
 
 from config.logger_config import configure_logger
+from config.project_config import PROJECT_CONFIG
 from utils.db_util import get_session
 from datetime import datetime
 import pandas as pd
@@ -13,7 +14,7 @@ FieldBronzeTableModel = None
 # Generate the SQLAlchemy model class dynamically for the 'field_bronze_table' table
 try:
     if FieldBronzeTableModel is None:
-        FieldBronzeTableModel = generate_model_for_table('field_bronze_table')
+        FieldBronzeTableModel = generate_model_for_table(PROJECT_CONFIG["SQL_TABLES"]["FIELD"]["BRONZE_TABLE"])
         logger.info(f"Generated model class for table: {FieldBronzeTableModel.__tablename__}")
 except Exception as e:
     logger.error(f"Error generating model class for table 'field_bronze_table': {e}")

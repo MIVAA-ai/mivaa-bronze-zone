@@ -7,7 +7,7 @@
     },
     {
         "zone": "COMMON",
-        "query": "CREATE TABLE IF NOT EXISTS files (id INTEGER PRIMARY KEY, filename TEXT NOT NULL, filepath TEXT NOT NULL, datatype TEXT NOT NULL, checksum TEXT NOT NULL, remarks TEXT, status TEXT)",
+        "query": "CREATE TABLE IF NOT EXISTS files (id INTEGER PRIMARY KEY, filename TEXT NOT NULL, filepath TEXT NOT NULL, datatype TEXT CHECK(datatype IN ('FIELD', 'WELL_BORE', 'BORE_HOLE')) NOT NULL, checksum TEXT NOT NULL, remarks TEXT, file_status TEXT CHECK(file_status IN ('PICKED', 'BRONZE_PROCESSING', 'SILVER_PROCESSING', 'BRONZE_PROCESSED', 'SILVER_PROCESSED', 'ERROR')) NOT NULL)",
         "query_type": "CREATE",
         "table_name": "files"
     },
@@ -35,5 +35,12 @@
         "query_type": "CREATE",
         "data_columns": "FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName",
         "table_name": "field_bronze_table"
+    },
+    {
+        "zone": "SILVER",
+        "query": "CREATE TABLE IF NOT EXISTS field_silver_table (id INTEGER PRIMARY KEY, FieldName TEXT NOT NULL, FieldType TEXT, Source TEXT, DiscoveryDate DATE, ParentFieldName TEXT, ParentFieldOSDUId TEXT, AsIngestedCoordinates JSON, Wgs84Coordinates JSON, CRS TEXT, FileId INTEGER, validation_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
+        "query_type": "CREATE",
+        "data_columns": "FieldName,FieldType,Source,DiscoveryDate,ParentFieldName,ParentFieldOSDUId,AsIngestedCoordinates,Wgs84Coordinates,CRS,FileId",
+        "table_name": "field_silver_table"
     }
 ]

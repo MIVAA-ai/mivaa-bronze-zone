@@ -50,7 +50,7 @@ def insert_data(session, filepath, datatype, remarks):
         datatype=datatype,
         checksum=checksum,
         remarks=remarks,
-        status=1  # Default status
+        file_status='PICKED'  # Default status
     )
 
     try:
@@ -75,8 +75,8 @@ def fetch_files_to_process(session):
     try:
         files_to_process = (
             session.query(FileModelClass)
-            .filter(FileModelClass.status.in_([1, 2]))
-            .order_by(FileModelClass.status.asc())
+            .filter(FileModelClass.file_status.in_(['PICKED', 'BRONZE_PROCESSED']))
+            .order_by(FileModelClass.file_status.asc())
             .first()
         )
         return files_to_process
@@ -105,13 +105,13 @@ def update_file_status(session, status, id, remarks=None):
             return
 
         # Update fields
-        file_record.status = status
+        file_record.file_status = status
         if remarks is not None:
             file_record.remarks = remarks
 
         # Commit the changes
         session.commit()
-        logger.info(f"Updated file with ID {id} to status {status}")
+        logger.info(f"Updated file with ID {id} to file_status {status}")
     except Exception as e:
-        logger.error(f"Error updating file status: {e}")
+        logger.error(f"Error updating file file_status: {e}")
         session.rollback()

@@ -6,6 +6,7 @@ from pandera.typing import Series
 from sqlalchemy import func
 from sqlalchemy.orm import aliased
 from config.logger_config import configure_logger
+from config.project_config import PROJECT_CONFIG
 from models.bronze_validation_results_field_data import log_field_bronze_table, FieldBronzeTableModel
 from models.error_messages import ErrorMessagesModel
 from models.validation_errors import log_errors_to_db, ValidationErrorsModel
@@ -185,7 +186,7 @@ def log_and_save_results(df, file_id, file_name, validation_errors):
 def validate_field(df, file_id, file_name):
     """Main function to validate data."""
     try:
-        DynamicFieldSchema = integrate_custom_checks("field_bronze_table")
+        DynamicFieldSchema = integrate_custom_checks(PROJECT_CONFIG["SQL_TABLES"]["FIELD"]["BRONZE_TABLE"])
         # Convert DiscoveryDate to datetime with dayfirst=True
         df['DiscoveryDate'] = pd.to_datetime(df['DiscoveryDate'], errors='coerce', dayfirst=True)
 

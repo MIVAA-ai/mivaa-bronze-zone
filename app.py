@@ -1,16 +1,12 @@
 from config.logger_config import configure_logger
 from crawler import start_polling_thread, poll_table
-from validators.field_data_validator import validate_field
+from file_processor.file_processor_registry import FileProcessorRegistry
 from utils.db_util import get_session, get_columns_from_store
 from models.files import insert_data, fetch_files_to_process, update_file_status
 import pandas as pd
 
 # Configure logger
 logger = configure_logger(__name__)
-
-# Fetch column list for the 'field_bronze_table'
-field_column_list = get_columns_from_store('field_bronze_table')
-logger.info(f"Fetched column list for 'field_bronze_table': {field_column_list}")
 
 def insert_fields_data_in_db(filepath):
     """
@@ -21,22 +17,10 @@ def insert_fields_data_in_db(filepath):
     with get_session() as session:
         try:
             logger.info(f"Inserting data from file: {filepath}")
-            insert_data(session, str(filepath), 'field', '')
+            insert_data(session, str(filepath), 'FIELD', '')
             logger.info("Data insertion completed successfully.")
         except Exception as e:
             logger.error(f"Error inserting data from file {filepath}: {e}")
-
-def validate_columns(df, column_list):
-    """
-    Validate that the required columns exist in the DataFrame.
-
-    :param df: DataFrame to validate.
-    :return: Count of missing columns.
-    """
-    missing_columns = [col for col in column_list if col not in df.columns]
-    if missing_columns:
-        logger.warning(f"Missing columns: {missing_columns}")
-    return len(missing_columns)
 
 def read_fields_data_in_db():
     """
@@ -50,21 +34,28 @@ def read_fields_data_in_db():
                 logger.info("No files to process.")
                 return
 
-            logger.info(f"Processing file: {results.filepath}")
+            logger.info(f"Processing file: {results.filepath} with file_status {results.file_status}")
             df = pd.read_csv(results.filepath)
 
-            # Validate columns
-            if validate_columns(df, field_column_list):
-                logger.error("Column validation failed. Updating file status to error.")
-                update_file_status(session, '4', results.id, "Error: Columns do not match")
-            else:
-                logger.info("Column validation passed. Updating file status to processing.")
-                update_file_status(session, '2', results.id)
+            file_processor = FileProcessorRegistry.get_processor(results.datatype)
 
-                # Perform field validation
-                validate_field(df, results.id, results.filename)
-                logger.info("Field validation completed successfully. Updating file status to complete.")
-                update_file_status(session, '3', results.id)
+            if results.file_status == 'BRONZE_PROCESSED':
+                logger.info("Updating file status to 'SILVER_PROCESSING'.")
+                update_file_status(session, 'SILVER_PROCESSING', results.id)
+                return
+            # Validate columns
+            if file_processor.validate_columns(df):
+                logger.error("Column validation failed. Updating file status to error.")
+                update_file_status(session, 'ERROR', results.id, "Error: Columns do not match")
+                return
+            else:
+                logger.info("Column validation passed. Updating file status to 'BRONZE_PROCESSING'.")
+                update_file_status(session, 'BRONZE_PROCESSING', results.id)
+
+                file_processor.validate(df, results)
+                logger.info("Field validation completed successfully. Updating file status to 'BRONZE_PROCESSED'.")
+                update_file_status(session, 'BRONZE_PROCESSED', results.id)
+                return
         except Exception as e:
             logger.error(f"An error occurred while processing files: {e}")
 

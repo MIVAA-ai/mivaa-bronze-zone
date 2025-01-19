@@ -52,6 +52,7 @@ def parse_create_table_sql(sql):
     :return: A tuple containing the table name and a list of column definitions.
     """
     try:
+        # Extract table name
         table_name_match = re.search(r"CREATE TABLE IF NOT EXISTS\s+(\w+)", sql, re.IGNORECASE)
         if not table_name_match:
             logger.error("Could not extract table name from SQL")
@@ -59,17 +60,23 @@ def parse_create_table_sql(sql):
 
         table_name = table_name_match.group(1)
 
-        # Extract column definitions
+        # Extract column definitions (handle nested structures)
         column_defs_match = re.search(r"\((.+)\)", sql, re.DOTALL)
         if not column_defs_match:
             logger.error("Could not extract column definitions from SQL")
             raise ValueError("Could not extract column definitions from SQL")
 
-        column_defs = column_defs_match.group(1).split(",")
-        columns = []
+        column_defs_raw = column_defs_match.group(1)
+        # Split columns carefully to handle commas inside CHECK and other constraints
+        column_defs = re.split(r",(?![^\(]*\))", column_defs_raw.strip())
 
+        columns = []
         for column_def in column_defs:
             parts = column_def.strip().split()
+            if len(parts) < 2:
+                logger.warning(f"Skipping malformed column definition: {column_def}")
+                continue
+
             column_name = parts[0]
             column_type = parts[1]
             nullable = not ("NOT NULL" in column_def.upper())
@@ -79,7 +86,7 @@ def parse_create_table_sql(sql):
                 "name": column_name,
                 "type": column_type,
                 "nullable": nullable,
-                "primary_key": primary_key
+                "primary_key": primary_key,
             })
 
         logger.info(f"Parsed table '{table_name}' with columns: {columns}")

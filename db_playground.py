@@ -53,3 +53,18 @@ with get_session() as session:
             print("No data found in files.")
     except Exception as e:
         print("Error querying files:", e)
+
+
+    # Query data
+    try:
+        result = session.execute(text("SELECT * FROM field_bronze_table")).fetchall()
+        if result:
+            # Fetch column names explicitly using the result object
+            headers = result[0]._fields  # Extract column names from the result's metadata
+            rows = [tuple(row) for row in result]  # Convert rows to tuples
+            print("Contents of field_bronze_table:")
+            print(tabulate(rows, headers=headers, tablefmt="grid"))
+        else:
+            print("No data found in field_bronze_table.")
+    except Exception as e:
+        print("Error querying field_bronze_table:", e)
