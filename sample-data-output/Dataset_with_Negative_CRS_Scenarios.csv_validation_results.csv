@@ -1,0 +1,11 @@
+id,row_index,file_id,validation_status,FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName,validation_timestamp,error_message,error_severity
+130,0,5,Passed,Field_C,OilField,2021-07-17,51.68000030517578,60.060001373291016,EPSG::4267,Generated,nan,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+131,1,5,Passed,Field_B,MixedField,2020-02-21,41.599998474121094,53.720001220703125,BoundGeographic2D:EPSG::4267_15851,Generated,Field_B,2025-01-13 10:49:45.362370,,
+132,2,5,Passed,Field_D,OilField,2021-04-02,44.91999816894531,61.88999938964844,BoundGeographic2D:EPSG::4267_15851,Generated,Field_D,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+133,3,5,Passed,Field_E,OilField,2024-02-17,44.77000045776367,57.91999816894531,Geographic2D:EPSG::6147,Generated,Field_C,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+134,4,5,Passed,Field_D,OilField,2021-04-02,41.470001220703125,54.2599983215332,BoundGeographic2D:EPSG::8508_EPSG::2638,Generated,Field_C,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+135,5,5,Passed,Field_A,OilField,2023-08-02,45.70000076293945,58.7599983215332,Geographic2D::4267,Generated,Field_C,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+136,6,5,Passed,Field_E,OilField,2024-02-17,56.34000015258789,55.9900016784668,BoundProjected:EPSG::4267_EPSG:,Generated,Field_B,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+137,7,5,Passed,Field_C,OilField,2021-07-17,54.849998474121094,53.11000061035156,EPSG::4267,Generated,Field_B,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+138,8,5,Passed,Field_C,OilField,2021-07-17,52.68000030517578,55.279998779296875,BoundProjected:EPSG::4267_EPSG:,Generated,Field_A,2025-01-13 10:49:45.362370,Polygon not closed,ERROR
+139,9,5,Passed,Field_A,OilField,2023-08-02,46.66999816894531,52.619998931884766,Geographic2D:EPSG::1058,Generated,nan,2025-01-13 10:49:45.362370,Polygon not closed,ERROR

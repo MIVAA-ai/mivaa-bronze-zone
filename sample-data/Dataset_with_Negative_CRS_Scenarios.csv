@@ -1,0 +1,11 @@
+FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName
+Field_C,OilField,2021-07-17,51.68,60.06,EPSG::4267,Generated,
+Field_B,MixedField,2020-02-21,41.6,53.72,BoundGeographic2D:EPSG::4267_15851,Generated,Field_B
+Field_D,OilField,2021-04-02,44.92,61.89,BoundGeographic2D:EPSG::4267_15851,Generated,Field_D
+Field_E,OilField,2024-02-17,44.77,57.92,Geographic2D:EPSG::6147,Generated,Field_C
+Field_D,OilField,2021-04-02,41.47,54.26,BoundGeographic2D:EPSG::8508_EPSG::2638,Generated,Field_C
+Field_A,OilField,2023-08-02,45.7,58.76,Geographic2D::4267,Generated,Field_C
+Field_E,OilField,2024-02-17,56.34,55.99,BoundProjected:EPSG::4267_EPSG:,Generated,Field_B
+Field_C,OilField,2021-07-17,54.85,53.11,EPSG::4267,Generated,Field_B
+Field_C,OilField,2021-07-17,52.68,55.28,BoundProjected:EPSG::4267_EPSG:,Generated,Field_A
+Field_A,OilField,2023-08-02,46.67,52.62,Geographic2D:EPSG::1058,Generated,

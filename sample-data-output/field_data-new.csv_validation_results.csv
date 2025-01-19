@@ -1,0 +1,10 @@
+id,row_index,file_id,validation_status,FieldName,FieldType,DiscoveryDate,X,Y,CRS,Source,ParentFieldName,validation_timestamp,error_message,error_severity
+140,0,6,Passed,Field_A,OilField,2023-09-15,45.119998931884766,67.88999938964844,EPSG:4326,nan,nan,2025-01-13 10:49:55.482585,Incomplete Polygon Data,ERROR
+141,1,6,Passed,Field_A,OilField,2023-09-15,,67.44999694824219,EPSG:4326,nan,nan,2025-01-13 10:49:55.482585,Incomplete Polygon Data,ERROR
+142,2,6,Passed,Field_A,OilField,2023-09-15,47.560001373291016,68.2300033569336,EPSG:4326,nan,nan,2025-01-13 10:49:55.482585,Incomplete Polygon Data,ERROR
+143,3,6,Passed,Field_A,OilField,2023-09-15,45.119998931884766,67.88999938964844,EPSG:4326,nan,nan,2025-01-13 10:49:55.482585,Incomplete Polygon Data,ERROR
+144,4,6,Passed,Field_B,GasField,2021-05-10,,,nan,nan,nan,2025-01-13 10:49:55.482585,,
+145,5,6,Passed,Field_C,OilField,2022-03-21,50.0,60.0,EPSG:3857,nan,nan,2025-01-13 10:49:55.482585,,
+146,6,6,Passed,Field_C,OilField,2022-03-21,51.0,61.0,EPSG:3857,nan,nan,2025-01-13 10:49:55.482585,,
+147,7,6,Passed,Field_C,OilField,2022-03-21,50.5,60.5,EPSG:3857,nan,nan,2025-01-13 10:49:55.482585,,
+148,8,6,Passed,Field_C,OilField,2022-03-21,50.0,60.0,EPSG:3857,nan,nan,2025-01-13 10:49:55.482585,,
